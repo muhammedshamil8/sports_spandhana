@@ -1,7 +1,6 @@
 
 import ishaaq  from '../../assets/sports/ishaaq.png'
 import yasin from '../../assets/sports/yasin.png'
-import Fayis from '../../assets/arts/fayis.png'
 import Akhila from  '../../assets/arts/Akhila.png'
 import Saeed from '../../assets/arts/Saeed.png'
 import Adwaid from  '../../assets/arts/Adwaid.png'
