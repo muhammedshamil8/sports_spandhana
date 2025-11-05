@@ -1,10 +1,9 @@
 import { motion } from "framer-motion"
 import '../../styles/Responsive.css'
 import Fathima_Asela_M from '../../assets/arts/Fathima_Asela_M.png'
-import Subeena from  '../../assets/arts/Subeena.png'
-import Jabeera_Sherin from '../../assets/arts/Jabeera_Sherin.png'
+import Fathima from '../../assets/sports/fathima.png'
 import Shahira from  '../../assets/arts/Shahira.png'
-import Arathi from  '../../assets/arts/Arathi.png'
+import Thanzeel from  '../../assets/sports/thanzeel.png'
 import Misha_Manoj from  '../../assets/arts/Misha_Manoj.png'
 import Muhammed_Fahad from  '../../assets/arts/Muhammed_Fahad.png'
 import Fathima_Rabeeha from  '../../assets/arts/Fathima_Rabeeha.png'
@@ -59,12 +58,12 @@ function Captains() {
                         >
                             <div className='flex flex-col items-center justify-center'>
                               <div className='relative onstage-committee overflow-hidden'>
-                                <img src={Subeena} alt='main1' className='w-full h-full object-cover' />
+                                <img src={Fathima} alt='main1' className='w-full h-full object-cover' />
                                 <div className='absolute h-20 w-8 -top-8 -left-5 rotate-[55deg] background-custom-color'></div>
                                 <div className='absolute background-custom-color h-[70px] w-10 -bottom-8 -right-5  rotate-[55deg]'></div>
                               </div>
                               <div className='flex items-center justify-start  w-full'>
-                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Subeena</h3>
+                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Fathima</h3>
                               </div>
                             </div>
                             </motion.div>
@@ -83,12 +82,12 @@ function Captains() {
                         >
                             <div className='flex flex-col items-center justify-center '>
                               <div className='relative onstage-committee overflow-hidden'>
-                                <img src={Arathi} alt='main1' className='w-full h-full object-cover' />
+                                <img src={Munavvar} alt='main1' className='w-full h-full object-cover' />
                                 <div className='absolute h-20 w-8 -top-8 -left-5 rotate-[55deg]  background-custom-color'></div>
                                 <div className='absolute background-custom-color h-[70px] w-10 -bottom-8 -right-5  rotate-[55deg]'></div>
                               </div>
                               <div className='flex items-center justify-start  w-full'>
-                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Arathi K</h3>
+                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Munavvar</h3>
                               </div>
                             </div>
                             </motion.div>
@@ -127,12 +126,12 @@ function Captains() {
                         >
                             <div className='flex flex-col items-center justify-center '>
                               <div className='relative onstage-committee overflow-hidden'>
-                                <img src={Jabeera_Sherin} alt='main1' className='w-full h-full object-cover' />
+                                <img src={Thanzeel} alt='main1' className='w-full h-full object-cover' />
                                 <div className='absolute h-20 w-8 -top-8 -left-5 rotate-[55deg]  background-custom-color'></div>
                                 <div className='absolute background-custom-color h-[70px] w-10 -bottom-8 -right-5  rotate-[55deg]'></div>
                               </div>
                               <div className='flex items-center justify-start  w-full'>
-                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Jabeera Sherin. P</h3>
+                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Thanzeel</h3>
                               </div>
                             </div>
                             </motion.div>

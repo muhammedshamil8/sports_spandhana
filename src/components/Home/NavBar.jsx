@@ -1,6 +1,6 @@
 import { Link } from 'react-scroll';
 import { NavLink } from 'react-router-dom';
-import Logo from '../../assets/arts/logo.png';
+import Logo from '../../assets/sports/logo.png';
 import { useEffect, useState } from 'react';
 import { Example } from "../SideBar/Example";
 import '../../styles/NavBar.css';

@@ -1,12 +1,11 @@
 
-import Shahina from '../../assets/arts/Shahina.png'
-import Safa from '../../assets/arts/Safa.png'
-import Sheela from '../../assets/arts/Sheela.png'
-import Fayis from '../../assets/sports/fayis.png'
-import Akhila from  '../../assets/sport/Akhila.png'
+import ishaaq  from '../../assets/sports/ishaaq.png'
+import yasin from '../../assets/sports/yasin.png'
+import Fayis from '../../assets/arts/fayis.png'
+import Akhila from  '../../assets/arts/Akhila.png'
 import Saeed from '../../assets/arts/Saeed.png'
-import Adwaid from  '../../assets/sports/Adwaid.png'
-
+import Adwaid from  '../../assets/arts/Adwaid.png'
+import Sharafas from '../../assets/sports/sharafas.png'
 import { motion } from "framer-motion"
 
 function Committe() {
@@ -128,13 +127,13 @@ function Committe() {
           >
               <div className='flex flex-col items-center justify-center'>
                 <div className='relative onstage-committee overflow-hidden'>
-                  <img src={Fayis} alt='main1' className='w-full h-full object-cover ' />
+                  <img src={Sharafas} alt='main1' className='w-full h-full object-cover ' />
                   <div className='absolute h-full w-2 top-0 bottom-0 left-0  background-custom-color '></div>
                   <div className='absolute h-20 w-8 -top-8 -left-5 rotate-[55deg] background-custom-color'></div>
                   <div className='absolute background-custom-color h-[70px] w-10 -bottom-8 -right-5  rotate-[55deg]'></div>
                 </div>
                 <div className='flex items-center justify-start  w-full'>
-                  <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Fayis</h3>
+                  <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Sharafas</h3>
                 </div>
               </div>
               </motion.div>
