@@ -1,0 +1,147 @@
+/* body {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(180deg, #0055ff 0%, rgb(0, 153, 255) 100%);
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  } */
+.sideBarOpen {
+    width: 300px;
+    z-index: 999 !important;
+    height: 100vh;
+    transition: 0.5s;
+}
+
+.sideBarClosed {
+    width: 0;
+    height: 100vh;
+    z-index: 999 !important;
+    transition: 0.5s;
+
+}
+
+.open {
+    opacity: 1;
+    display: block;
+}
+
+.closed {
+    opacity: 0;
+    display: none;
+}
+
+.navActive2 {
+    background-color: rgba(233, 233, 233, 0.664);
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    background: #cac0c0e8;
+    filter: blur(1px) !important;
+    /* backdrop-filter: blur(5px) !important; */
+}
+
+.button {
+    outline: none;
+    border: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: pointer;
+    position: absolute;
+    top: 29px;
+    left: 33px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    padding: 25px;
+    position: absolute;
+    top: 100px;
+    width: 230px;
+
+}
+
+li {
+    list-style: none;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+}
+
+.icon-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex: 40px 0;
+    margin-right: 20px;
+}
+
+.text-placeholder {
+    border-radius: 5px;
+    width: 200px;
+    height: 20px;
+    flex: 1;
+}
+
+/* .refresh {
+    padding: 10px;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 10px;
+    width: 20px;
+    height: 20px;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  } */
+@media (max-width: 1024px) {
+    .nav-logo {}
+}
+
+@media (max-width: 768px) {
+    .nav-logo {
+        width: 130px;
+    }
+   
+}
+
+@media (max-width: 550px) {
+    .nav-logo {
+        width: 90px;
+    }
+
+}

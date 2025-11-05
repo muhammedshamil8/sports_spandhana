@@ -1,0 +1,283 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #262626;
+  background-color: #fff0e9;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: white;
+  text-decoration: inherit;
+}
+
+a:hover {
+  border-bottom: 3px solid white;
+}
+
+body {
+  margin: 0;
+  opacity: 0;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  position: relative;
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.navlink {
+  text-decoration: none;
+}
+
+.navActive {
+  border-bottom: 3px solid rgba(212, 212, 212, 0.486);
+}
+
+.background-custom-color {
+  background-color: #fff0e9;
+}
+
+.navLogo {
+  text-decoration: none !important;
+}
+
+.navLogo:hover,
+.link-custom:hover {
+  border-bottom: none !important;
+}
+
+
+
+
+
+
+
+/* designers animation */
+.navlink-designer {
+  text-decoration: none !important;
+}
+
+.navlink-designer:hover {
+  text-decoration: none !important;
+  border: none !important;
+}
+
+.designer-1 {
+  scale: 1;
+  /* animation: designer-1 5s ease-in-out infinite; */
+  transition: all .5s ease-in-out;
+
+}
+
+.designer-1:hover {
+  color: #fff0e9;
+
+  text-shadow: 2px 2px #727272;
+  animation-play-state: paused;
+}
+
+.designer-2 {
+  scale: 1;
+  /* animation: designer-2 5s ease-in-out infinite; */
+  transition: all .5s ease-in-out;
+
+}
+
+.designer-2:hover {
+  color: #fff0e9;
+
+  text-shadow: 2px 2px #757575;
+  animation-play-state: paused;
+}
+
+.designer-3 {
+  scale: 1;
+  /* animation: designer-3 5s ease-in-out infinite; */
+  transition: all .5s ease-in-out;
+
+}
+
+.designer-3:hover {
+  color: #fff0e9;
+  text-shadow: 2px 2px #7e7e7e;
+  animation-play-state: paused;
+}
+
+@keyframes designer-1 {
+  0% {
+    transform: translateY(-40%);
+  }
+
+  25% {
+    transform: translateY(0);
+    scale: 1.2;
+
+  }
+
+  50% {
+    transform: translateX(-40%);
+    scale: 1;
+  }
+
+  75% {
+    transform: translateY(0);
+    scale: 1.2;
+  }
+
+  100% {
+    transform: translateY(-40%);
+  }
+}
+
+@keyframes designer-2 {
+  0% {
+    transform: translateY(40%);
+  }
+
+  25% {
+    transform: translateY(0);
+    scale: 1.2;
+  }
+
+  50% {
+    transform: translateY(-40%);
+    scale: 1;
+  }
+
+  75% {
+    transform: translateY(0);
+    scale: 1.2;
+  }
+
+  100% {
+    transform: translateY(40%);
+  }
+}
+
+@keyframes designer-3 {
+  0% {
+    transform: translateY(-40%);
+  }
+
+  25% {
+    transform: translate(0);
+    scale: 1.2;
+  }
+
+  50% {
+    transform: translateX(100%);
+    scale: 1;
+
+  }
+
+  75% {
+    transform: translateY(0);
+    scale: 1.2;
+  }
+
+  100% {
+    transform: translateY(-40%);
+  }
+}
+
+.responsive-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+@media (max-width: 850px) {
+  .responsive-footer {
+    display: flex;
+    gap: 40px;
+    flex-direction: column-reverse;
+    margin-bottom: 20px;
+  }
+
+  .responsive-footer-child-1 {
+    display: flex;
+    align-items: center;
+  }
+
+  .responsive-footer-child-2 {
+    display: flex;
+    align-items: center;
+  }
+
+  .responsive-footer-child {
+    display: flex;
+    align-items: center;
+  }
+
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px; /* Set the width of the scrollbar */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: #7e4646; /* Color of the scrollbar track */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background-color: #531c1c; /* Color of the scrollbar handle */
+  border-radius: 0px; /* Border radius of the scrollbar handle */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #220d0d; /* Change color on hover */
+}
+
+
+.explosion {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: red; /* Customize explosion appearance */
+  border-radius: 50%;
+  z-index: 30;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}

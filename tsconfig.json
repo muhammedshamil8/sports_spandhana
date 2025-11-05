@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "jsx": "react-jsx", 
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "noEmit": true,
+      "isolatedModules": true,
+      "strict": false
+    },
+    "include": ["src/components/SideBar/* "," ./components/Link "],
+    "exclude": ["node_modules"]
+}
+  

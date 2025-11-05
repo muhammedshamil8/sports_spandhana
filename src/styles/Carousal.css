@@ -1,0 +1,191 @@
+/* Base Carousel Styling */
+.mySwiper2 {
+  width: 100%;
+  padding-top: 30px;
+  padding-bottom: 50px;
+}
+
+.mySwiper2 .swiper-slide {
+  width: 300px;
+  height: 300px;
+  background-position: center;
+  background-size: cover;
+}
+
+/* Responsive Result Card */
+.result-card-respo {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.responsive-poster-img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Position and size adjustments for content */
+.respo-program {
+  font-size: 15px !important;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  max-width: 200px;
+}
+
+.respo-result-card {
+  max-width: 220px;
+}
+
+.respo-badge {
+  width: 13px !important;
+  height: auto;
+}
+
+.respo-winner {
+  font-size: 9px !important;
+  line-height: 1.2;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.respo-winner-year {
+  font-size: 9px !important;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.more-winners {
+  font-size: 12px;
+  line-height: 1.1;
+}
+
+.more-winners-year {
+  font-size: 10px;
+  line-height: 1.1;
+}
+
+.respo-congrats {
+  max-width: 140px;
+  margin-top: 12px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .mySwiper2 .swiper-slide {
+    width: 260px;
+    height: 260px;
+  }
+  
+  .respo-program {
+    font-size: 11px;
+    max-width: 160px;
+  }
+  
+  .respo-result-card {
+    max-width: 180px;
+  }
+  
+  .respo-badge {
+    width: 20px;
+  }
+  
+  .respo-winner {
+    font-size: 12px;
+    max-width: 140px;
+  }
+  
+  .respo-winner-year {
+    font-size: 10px;
+  }
+  
+  .more-winners {
+    font-size: 11px;
+  }
+  
+  .more-winners-year {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mySwiper2 .swiper-slide {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .respo-program {
+    font-size: 10px !important;
+    max-width: 140px;
+  }
+  
+  .respo-result-card {
+    max-width: 160px;
+  }
+  
+  .respo-badge {
+    width: 11px;
+  }
+  
+  .respo-winner {
+    font-size: 5px !important;
+    max-width: 120px;
+  }
+  
+  .respo-winner-year {
+    font-size: 5px !important;
+  }
+  
+  .more-winners {
+    font-size: 10px;
+  }
+  
+  .more-winners-year {
+    font-size: 8px;
+  }
+}
+
+/* Skeleton Loading Styles */
+.skeleton-loading .skeleton-item {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 12px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Fix for absolute positioning on result cards */
+.result-card-respo {
+  position: relative;
+}
+
+.result-card-respo > div {
+  position: relative;
+  height: 100%;
+}
+
+/* Adjust positioning for mobile */
+@media (max-width: 480px) {
+  .result-card-respo > div > div.flex {
+    left: 20px !important;
+    top: 30% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .result-card-respo > div > div.flex {
+    left: 20px !important;
+    top: 25% !important;
+  }
+}

@@ -1,0 +1,158 @@
+/* initial */
+/* captains and committee .... */
+
+.responsive-image-captains {
+    width: 75%;
+    margin: auto;
+}
+
+.main-committee {
+    width: 160px;
+    height: 250px;
+    box-shadow: 10px 10px 40px 10px #fff0e9 inset !important;
+    padding: 1px;
+}
+
+.onstage-committee {
+    width: 160px;
+    height: 220px;
+    box-shadow: 10px 10px 40px 10px #fff0e9 inset !important;
+    padding: 1px;
+}
+
+.offstage-committee {
+    width: 160px;
+    height: 220px;
+    box-shadow: 10px 10px 40px 10px #fff0e9 inset !important;
+    padding: 1px;
+}
+
+
+
+
+
+
+
+@media (min-width: 1050px) {}
+
+@media (max-width: 1050px) {}
+
+@media (max-width: 850px) {}
+
+@media (max-width: 650px) {
+    .main-committee {
+        width: 140px;
+        height: 230px;
+    }
+    .onstage-committee {
+        width: 130px;
+        height: 190px;
+    }
+    .onstage-committee-name{
+        font-size: 18px !important;
+        line-height: 18px !important;
+    }
+
+
+    .offstage-committee  {
+        width: 130px;
+        height: 190px;
+    }
+    .offstage-committee-name{
+        font-size: 18px !important;
+        line-height: 18px !important;
+    }
+
+}
+
+@media (max-width: 550px) {
+    .main-committee {
+        width: 130px;
+        height: 220px;
+    }
+    .main-committe-parent{
+        gap: 15px !important;
+    }
+    .main-committee-heading{
+        font-size: 20px !important;
+        line-height: 20px !important;
+    }
+    .main-committee-name{
+        font-size: 15px !important;
+        line-height: 15px !important;
+    }
+
+    .onstage-committee {
+        width: 100px;
+        height: 150px;
+    }
+    .onstage-committee-name{
+        font-size: 15px !important;
+        line-height: 15px !important;
+        max-width: 100px;
+        overflow-wrap: break-word;
+    }
+    .onstage-committee-heading{
+        font-size: 18px !important;
+    }
+
+
+    .offstage-committee  {
+        width: 100px;
+        height: 150px;
+    }
+    .offstage-committee-name{
+        font-size: 15px !important;
+        line-height: 15px !important;
+        max-width: 100px;
+        overflow-wrap: break-word;
+    }
+    .offstage-committee-heading{
+        font-size: 18px !important;
+    }
+}
+
+@media (max-width: 450px) {
+    .main-committee {
+        width: 100px;
+        height: 200px;
+    }
+    .main-committe-parent{
+        gap: 15px !important;
+    }
+    .main-committee-heading{
+        font-size: 15px !important;
+        line-height: 15px !important;
+    }
+    .main-committee-name{
+        font-size: 15px !important;
+        line-height: 15px !important;
+        max-width: 100px;
+        overflow-wrap: break-word;
+    }
+
+    .offstage-committee  {
+        width: 80px;
+        height: 130px;
+    }
+    .offstage-committee-name{
+        font-size: 15px !important;
+        line-height: 15px !important;
+    }
+    .offstage-committee-heading{
+        font-size: 18px !important;
+    }
+
+
+    .onstage-committee  {
+        width: 80px;
+        height: 130px;
+    }
+    .onstage-committee-name{
+        font-size: 15px !important;
+        line-height: 15px !important;
+    }
+    .onstage-committee-heading{
+        font-size: 18px !important;
+    }
+}
