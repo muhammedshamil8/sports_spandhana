@@ -36,7 +36,7 @@ function Footer() {
               8281285824 
               </p>
               <p>
-              lioti2010@gmail.com
+              hiotti2010@gmail.com
               </p>
               {/* <p>Re-accredited with’A’ Grade by NAAC</p> */}
             </div>
