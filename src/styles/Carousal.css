@@ -26,7 +26,7 @@
 
 /* Position and size adjustments for content */
 .respo-program {
-  font-size: 15px !important;
+  /* font-size: 15px !important; */
   line-height: 1.2;
   margin-bottom: 20px;
   max-width: 200px;
@@ -37,11 +37,11 @@
 }
 
 .respo-badge {
-  width: 13px !important;
+  width: 15px;
   height: auto;
 }
 
-.respo-winner {
+/* .respo-winner {
   font-size: 9px !important;
   line-height: 1.2;
   max-width: 160px;
@@ -54,8 +54,10 @@
   font-size: 9px !important;
   line-height: 1.2;
   color: rgba(255, 255, 255, 0.8);
-}
-
+} */
+.respo-winner {
+    font-size: 14px;
+  }
 .more-winners {
   font-size: 12px;
   line-height: 1.1;
@@ -78,10 +80,10 @@
     height: 260px;
   }
   
-  .respo-program {
+  /* .respo-program {
     font-size: 11px;
     max-width: 160px;
-  }
+  } */
   
   .respo-result-card {
     max-width: 180px;
@@ -90,23 +92,26 @@
   .respo-badge {
     width: 20px;
   }
-  
   .respo-winner {
+    font-size: 10px !important;
+    max-width: 140px;
+  }
+  /* .respo-winner {
     font-size: 12px;
     max-width: 140px;
   }
   
   .respo-winner-year {
     font-size: 10px;
-  }
+  } */
   
-  .more-winners {
+  /* .more-winners {
     font-size: 11px;
-  }
+  } */
   
-  .more-winners-year {
+  /* .more-winners-year {
     font-size: 9px;
-  }
+  } */
 }
 
 @media (max-width: 480px) {
@@ -116,8 +121,9 @@
   }
   
   .respo-program {
-    font-size: 10px !important;
+    font-size: 12px !important;
     max-width: 140px;
+    margin-left: 10px;
   }
   
   .respo-result-card {
@@ -128,7 +134,7 @@
     width: 11px;
   }
   
-  .respo-winner {
+  /* .respo-winner {
     font-size: 5px !important;
     max-width: 120px;
   }
@@ -139,11 +145,11 @@
   
   .more-winners {
     font-size: 10px;
-  }
+  } */
   
-  .more-winners-year {
+  /* .more-winners-year {
     font-size: 8px;
-  }
+  } */
 }
 
 /* Skeleton Loading Styles */

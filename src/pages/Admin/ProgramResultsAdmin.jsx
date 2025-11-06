@@ -1,380 +1,376 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, query, where, doc, getDoc, updateDoc } from 'firebase/firestore';
-// import { db } from '@/config/fbase';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  where,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc
+} from 'firebase/firestore';
 import { db } from '@/config/fbase';
 
-
 const ProgramResultsAdmin = () => {
-  
   const [participants, setParticipants] = useState([]);
   const [programs, setPrograms] = useState([]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('view'); // 'view' | 'create'
+  const [submitting, setSubmitting] = useState(false);
+
   const [formData, setFormData] = useState({
     programId: '',
     stage: 'on stage',
     isGroupItem: false,
+    teamName: '',
+    captainId: '',
     winners: [{ participantId: '', place: '1st' }]
   });
+
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Fetch participants and programs on component mount
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch participants
-        const participantsSnapshot = await getDocs(collection(db, 'participants'));
-        const participantsList = participantsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setParticipants(participantsList);
 
-        // Fetch published programs
-        const publishedProgramsQuery =collection(db, 'programs');
-        const programsSnapshot = await getDocs(publishedProgramsQuery);
-        const programsList = programsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        setPrograms(programsList);
-        
+        const participantsSnap = await getDocs(collection(db, 'participants'));
+        const programsSnap = await getDocs(collection(db, 'programs'));
+        const resultsSnap = await getDocs(collection(db, 'programResults'));
+
+        setParticipants(participantsSnap.docs.map(d => ({ id: d.id, ...d.data() })));
+        setPrograms(programsSnap.docs.map(d => ({ id: d.id, ...d.data() })));
+        setResults(resultsSnap.docs.map(d => ({ id: d.id, ...d.data() })));
+
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setErrorMessage('Failed to load data. Please try again.');
+        console.error(error);
+        setErrorMessage('Failed to fetch data.');
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const winners = [...formData.winners];
-    winners[index][name] = value;
+  // ✅ Handle program selection
+  const handleProgramSelect = (value) => {
+    const selectedProgram = programs.find(p => p.id === value);
     setFormData({
       ...formData,
-      winners
+      programId: value,
+      stage: selectedProgram?.stage || 'on stage',
+      isGroupItem: selectedProgram?.isGroupItem || false,
     });
   };
 
+  // ✅ Handle input for winners
+  const handleInputChange = (e, index) => {
+    const { name, value } = e.target;
+    const updatedWinners = [...formData.winners];
+    updatedWinners[index][name] = value;
+    setFormData({ ...formData, winners: updatedWinners });
+  };
+
+  // ✅ Add or remove winner rows
   const handleAddWinner = () => {
     setFormData({
       ...formData,
       winners: [...formData.winners, { participantId: '', place: '1st' }]
     });
   };
-
   const handleRemoveWinner = (index) => {
-    const winners = [...formData.winners];
-    winners.splice(index, 1);
-    setFormData({
-      ...formData,
-      winners
-    });
+    const updated = [...formData.winners];
+    updated.splice(index, 1);
+    setFormData({ ...formData, winners: updated });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSuccessMessage('');
-    setErrorMessage('');
-  
-    try {
-      // Validate inputs
-      if (!formData.programId || formData.winners.some(winner => !winner.participantId)) {
-        setErrorMessage('Please select a program and all participants');
-        return;
+  // ✅ Submit logic (Group vs Individual)
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setSuccessMessage('');
+  setErrorMessage('');
+  setSubmitting(true);
+
+  try {
+    // Basic validation
+    if (!formData.programId || formData.winners.some(w => !w.participantId)) {
+      setErrorMessage('Please select a program and all participants.');
+      setSubmitting(false);
+      return;
+    }
+
+    const selectedProgram = programs.find(p => p.id === formData.programId);
+    if (!selectedProgram) {
+      setErrorMessage('Selected program not found.');
+      setSubmitting(false);
+      return;
+    }
+
+    const programName = selectedProgram.title;
+    const isGroup = selectedProgram.isGroupItem;
+
+    // Object to track points per team
+    const teamPointsToAdd = {};
+
+    // Process winners
+    const winnersData = await Promise.all(formData.winners.map(async (winner) => {
+      const participantDoc = await getDoc(doc(db, 'participants', winner.participantId));
+      if (!participantDoc.exists()) {
+        throw new Error(`Selected participant not found: ${winner.participantId}`);
       }
-  
-      // Get program name from the selected program
-      const selectedProgram = programs.find(program => program.id === formData.programId);
-      if (!selectedProgram) {
-        setErrorMessage('Selected program not found');
-        return;
+
+      const participantData = participantDoc.data();
+      const points = winner.place === '1st' ? 10 :
+                     winner.place === '2nd' ? 7 :
+                     winner.place === '3rd' ? 5 : 1;
+
+      const teamName = participantData.team || '';
+      if (teamName) {
+        teamPointsToAdd[teamName] = (teamPointsToAdd[teamName] || 0) + points;
       }
-      const programName = selectedProgram.title;
-  
-      // Process winners data
-      const winnersData = await Promise.all(formData.winners.map(async (winner) => {
-        const participantDoc = await getDoc(doc(db, 'participants', winner.participantId));
-        if (!participantDoc.exists()) {
-          throw new Error(`Selected participant not found: ${winner.participantId}`);
-        }
-  
-        const participantData = participantDoc.data();
-        const points = winner.place === '1st' ? 10 : 
-                        winner.place === '2nd' ? 7 : 
-                        winner.place === '3rd' ? 5 : 1;
-  
-        // Add null checks for each property
-        return {
-          id: winner.participantId,
-          name: participantData.name || '',
-          team: participantData.team || formData.team || '',
-          year: participantData.year || '',
-          points: points,
-          position: winner.place
-        };
-      }));
-  
-      // Create result document with null checks
-      const resultData = {
-        programId: formData.programId,
-        programName: programName || '',
-        winners: winnersData,
-        // Use form data if selectedProgram properties are undefined
-        stage: selectedProgram.stage || formData.stage || 'on stage',
-        isGroupItem: selectedProgram.isGroupItem !== undefined ? selectedProgram.isGroupItem : formData.isGroupItem,
-        timestamp: new Date()
+
+      const displayName = isGroup ? `${participantData.name} & Team` : participantData.name;
+
+      return {
+        id: winner.participantId,
+        name: displayName,
+        team: teamName,
+        year: participantData.year || '',
+        points,
+        position: winner.place
       };
-  
-      // Log data before adding to Firestore for debugging
-      console.log('About to add data to Firestore:', JSON.stringify(resultData));
-  
-      // Add to programResults collection
-      await addDoc(collection(db, 'programResults'), resultData);
-  
-      // Track teams that need to be updated
-      const teamPointsToAdd = {};
-  
-      // Update participant's total points
-      for (const winner of formData.winners) {
-        const participantRef = doc(db, 'participants', winner.participantId);
-        const participantDoc = await getDoc(participantRef);
-        const participantData = participantDoc.data();
-        
-        const points = winner.place === '1st' ? 10 : 
-                       winner.place === '2nd' ? 7 : 
-                       winner.place === '3rd' ? 5 : 1;
-                       
-        const totalPoints = (participantData.totalPoints || 0) + points;
-        
-        // Update participant's total points if not a group event
-        if (!selectedProgram.isGroupItem) {
-          await updateDoc(participantRef, {
-            totalPoints: totalPoints
-          });
+    }));
+
+    // Add result document
+    const resultData = {
+      programId: formData.programId,
+      programName,
+      stage: selectedProgram.stage,
+      isGroupItem: isGroup,
+      winners: winnersData,
+      timestamp: new Date(),
+    };
+
+    await addDoc(collection(db, 'programResults'), resultData);
+
+    // Update team points
+    for (const [teamName, addPoints] of Object.entries(teamPointsToAdd)) {
+      if (!teamName) continue;
+
+      const q = query(collection(db, 'teams'), where('name', '==', teamName));
+      const snapshot = await getDocs(q);
+
+      if (!snapshot.empty) {
+        const teamDoc = snapshot.docs[0];
+        const currentPoints = teamDoc.data().totalPoints || 0;
+        await updateDoc(doc(db, 'teams', teamDoc.id), {
+          totalPoints: currentPoints + addPoints
+        });
+      } else {
+        await addDoc(collection(db, 'teams'), {
+          name: teamName,
+          totalPoints: addPoints
+        });
+      }
+    }
+
+    // Reset form
+    setFormData({
+      programId: '',
+      stage: 'on stage',
+      isGroupItem: false,
+      winners: [{ participantId: '', place: '1st' }]
+    });
+
+    setSuccessMessage('Results added successfully!');
+  } catch (err) {
+    console.error('Error adding result:', err);
+    setErrorMessage(`Failed to add result: ${err.message}`);
+  } finally {
+    setSubmitting(false);
+  }
+};
+
+
+
+  // ✅ Delete result (with rollback)
+  const handleDeleteResult = async (resultId) => {
+    if (!window.confirm('Delete this result? Points will be rolled back.')) return;
+    try {
+      const resultRef = doc(db, 'programResults', resultId);
+      const resultSnap = await getDoc(resultRef);
+      const resultData = resultSnap.data();
+
+      if (resultData.isGroupItem) {
+        const teamQuery = query(collection(db, 'teams'), where('name', '==', resultData.team));
+        const teamSnap = await getDocs(teamQuery);
+        if (!teamSnap.empty) {
+          const teamRef = doc(db, 'teams', teamSnap.docs[0].id);
+          const currentPoints = teamSnap.docs[0].data().totalPoints || 0;
+          await updateDoc(teamRef, { totalPoints: Math.max(0, currentPoints - resultData.points) });
         }
-  
-        // Track points to add to teams
-        const team = participantData.team || formData.team || '';
-        if (team) {
-          if (!teamPointsToAdd[team]) {
-            teamPointsToAdd[team] = 0;
+      } else {
+        // rollback individuals + teams
+        const teamAdjust = {};
+        for (const winner of resultData.winners) {
+          const pRef = doc(db, 'participants', winner.id);
+          const pSnap = await getDoc(pRef);
+          if (pSnap.exists()) {
+            const currentPts = pSnap.data().totalPoints || 0;
+            await updateDoc(pRef, { totalPoints: Math.max(0, currentPts - winner.points) });
           }
-          teamPointsToAdd[team] += points;
+          if (winner.team) {
+            teamAdjust[winner.team] = (teamAdjust[winner.team] || 0) + winner.points;
+          }
+        }
+        for (const [teamName, pts] of Object.entries(teamAdjust)) {
+          const teamQuery = query(collection(db, 'teams'), where('name', '==', teamName));
+          const teamSnap = await getDocs(teamQuery);
+          if (!teamSnap.empty) {
+            const tRef = doc(db, 'teams', teamSnap.docs[0].id);
+            const current = teamSnap.docs[0].data().totalPoints || 0;
+            await updateDoc(tRef, { totalPoints: Math.max(0, current - pts) });
+          }
         }
       }
-  
-      // Update teams' totalPoints
-      for (const [teamName, pointsToAdd] of Object.entries(teamPointsToAdd)) {
-        // Query to find the team document
-        const teamQuery = query(
-          collection(db, "teams"), 
-          where("name", "==", teamName)
-        );
-        
-        const teamSnapshot = await getDocs(teamQuery);
-        
-        if (!teamSnapshot.empty) {
-          // Team exists, update their points
-          const teamDoc = teamSnapshot.docs[0];
-          const teamData = teamDoc.data();
-          const updatedPoints = (teamData.totalPoints || 0) + pointsToAdd;
-          
-          await updateDoc(doc(db, 'teams', teamDoc.id), {
-            totalPoints: updatedPoints
-          });
-          
-          console.log(`Updated team ${teamName} points: ${teamData.totalPoints || 0} + ${pointsToAdd} = ${updatedPoints}`);
-        } else {
-          // Team doesn't exist, create it
-          await addDoc(collection(db, 'teams'), {
-            name: teamName,
-            totalPoints: pointsToAdd
-          });
-          
-          console.log(`Created new team ${teamName} with ${pointsToAdd} points`);
-        }
-      }
-  
-      // Reset form and show success message
-      setFormData({
-        programId: '',
-        stage: 'on stage',
-        isGroupItem: false,
-        winners: [{ participantId: '', place: '1st' }]
-      });
-  
-      setSuccessMessage('Results added successfully!');
+
+      await deleteDoc(resultRef);
+      setResults(results.filter(r => r.id !== resultId));
+      setSuccessMessage('Result deleted and points rolled back.');
     } catch (error) {
-      console.error('Error adding results:', error);
-      setErrorMessage(`Failed to add results: ${error.message}`);
+      console.error(error);
+      setErrorMessage('Failed to delete result.');
     }
   };
-  
-  const selectprogram=(value)=>{
-    const selectedProgram = programs.find(program => program.id === value);
-  setFormData({...formData,programId:value,
-    stage:selectedProgram.stage,
-    isGroupItem:selectedProgram.isGroupItem})
-  }
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100 p-6">
-        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-2xl font-bold mb-4">Program Results Admin</h1>
-          <p className="text-gray-600">Loading data, please wait...</p>
-        </div>
-      </div>
-    );
-  }
+
+  if (loading) return <p className="p-6 text-gray-700">Loading...</p>;
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Program Results Admin</h1>
-        </div>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="flex justify-between items-center p-6 border-b">
+        <h2 className="text-xl font-bold">Program Results Admin</h2>
+        <button
+          onClick={() => setViewMode(viewMode === 'view' ? 'create' : 'view')}
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        >
+          {viewMode === 'view' ? 'Add Results' : 'View Results'}
+        </button>
+      </div>
 
-        {successMessage && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-            {successMessage}
+      {successMessage && <div className="m-4 p-3 bg-green-100 text-green-700 border border-green-300 rounded">{successMessage}</div>}
+      {errorMessage && <div className="m-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded">{errorMessage}</div>}
+
+      {viewMode === 'create' ? (
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          <div>
+            <label className="font-semibold block mb-1">Program</label>
+            <select
+              value={formData.programId}
+              onChange={(e) => handleProgramSelect(e.target.value)}
+              className="w-full bg-[#FFDAE1] px-4 py-2 border rounded-md"
+            >
+              <option value="">Select Program</option>
+              {programs.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
+            </select>
           </div>
-        )}
 
-        {errorMessage && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-            {errorMessage}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                Program
-              </label>
-              <select
-                name="programId"
-                value={formData.programId}
-                onChange={(e) =>selectprogram(e.target.value)}
-                className="text-[#280B0C] w-full bg-[#FFDAE1] px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#E1072E]"
+              {formData.winners.map((winner, i) => (
+                <div key={i} className="grid grid-cols-2 gap-4 items-end">
+                  <div>
+                    <label className="font-semibold block mb-1">Participant</label>
+                    <select
+                      name="participantId"
+                      value={winner.participantId}
+                      onChange={(e) => handleInputChange(e, i)}
+                      className="w-full bg-[#FFDAE1] px-4 py-2 border rounded-md"
+                    >
+                      <option value="">Select Participant</option>
+                      {participants.map(p => (
+                        <option key={p.id} value={p.id}>{p.name} - {p.department}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="font-semibold block mb-1">Place</label>
+                    <select
+                      name="place"
+                      value={winner.place}
+                      onChange={(e) => handleInputChange(e, i)}
+                      className="w-full bg-[#FFDAE1] px-4 py-2 border rounded-md"
+                    >
+                      <option value="1st">1st</option>
+                      <option value="2nd">2nd</option>
+                      <option value="3rd">3rd</option>
+                    </select>
+                  </div>
+                  {i > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveWinner(i)}
+                      className="text-sm text-white bg-red-500 px-2 py-1 rounded hover:bg-red-700"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddWinner}
+                className="text-white bg-pink-500 hover:bg-pink-700 px-3 py-1 rounded"
               >
-                <option value="">Select Program</option>
-                {programs.map((program) => (
-                  <option key={program.id} value={program.id}>
-                    {program.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-           
-
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                Stage
-              </label>
-              <input
-                disabled={true}
-                name="stage"
-                value={formData.stage}
-                className="text-[#280B0C] w-full bg-[#FFDAE1] px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#E1072E]"
-              >
-              </input>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                disabled={true}
-                type="checkbox"
-                id="isGroupItem"
-                name="isGroupItem"
-                checked={formData.isGroupItem}
-                className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="isGroupItem" className="ml-2 block text-gray-700 font-semibold">
-                Group Item
-              </label>
-            </div>
-          </div>
-
-          {formData.winners.map((winner, index) => (
-            <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Participant
-                </label>
-                <select
-                  name="participantId"
-                  value={winner.participantId}
-                  onChange={(e) => handleInputChange(e, index)}
-                  className="text-[#280B0C] w-full bg-[#FFDAE1] px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#E1072E]"
-                >
-                  <option value="">Select Participant</option>
-                  {participants.map((participant) => (
-                    <option key={participant.id} value={participant.id}>
-                      {participant.name} - {participant.department} ({participant.year})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Place
-                </label>
-                <select
-                  name="place"
-                  value={winner.place}
-                  onChange={(e) => handleInputChange(e, index)}
-                  className="text-[#280B0C] w-full bg-[#FFDAE1] px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#E1072E]"
-                >
-                  <option value="1st">1st Place</option>
-                  <option value="2nd">2nd Place</option>
-                  <option value="3rd">3rd Place</option>
-                  
-                </select>
-              </div>
-
-              {index > 0 && (
-                <button
-                  type="button"
-                  onClick={() => handleRemoveWinner(index)}
-                  className="text-white bg-red-500 hover:bg-red-700 font-bold py-2 px-4 rounded"
-                >
-                  Remove Winner
-                </button>
-              )}
-            </div>
-          ))}
+                + Add Winner
+              </button>
 
           <button
-            type="button"
-            onClick={handleAddWinner}
-            className="text-white bg-[#FF23B2] hover:bg-[#D43054] font-bold py-2 px-4 rounded"
-          >
-            Add Another Winner
-          </button>
-
-          <button
+            disabled={submitting}
             type="submit"
-            className="text-white w-full bg-[#E1072E] hover:bg-[#83041B] text-white font-bold py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-[#E1072E]"
+            className={`w-full py-3 rounded-md font-bold text-white ${submitting ? 'bg-gray-400' : 'bg-[#E1072E] hover:bg-[#83041B]'}`}
           >
-            Add Results
+            {submitting ? 'Saving...' : 'Save Result'}
           </button>
         </form>
-
-        <div className="mt-8">
-          <h2 className="text-xl font-bold mb-4">Recent Results</h2>
-          {/* Here you would add a table to display recent results */}
-          <p className="text-gray-600">Implementation of results listing would go here</p>
+      ) : (
+        <div className="p-6">
+          <h3 className="text-lg font-bold mb-3">Results List</h3>
+          {results.length === 0 ? (
+            <p className="text-gray-600">No results found.</p>
+          ) : (
+            <table className="min-w-full border bg-white rounded">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="px-4 py-2 text-left">Program</th>
+                  <th className="px-4 py-2 text-left">Type</th>
+                  <th className="px-4 py-2 text-left">Team/Captain</th>
+                  <th className="px-4 py-2 text-left">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.map(r => (
+                  <tr key={r.id} className="border-t hover:bg-gray-50">
+                    <td className="px-4 py-2">{r.programName}</td>
+                    <td className="px-4 py-2">{r.isGroupItem ? 'Group' : 'Individual'}</td>
+                    <td className="px-4 py-2">
+                      {r.isGroupItem ? `${r.team} (${r.captain})` : r.winners?.map(w => w.name).join(', ')}
+                    </td>
+                    <td className="px-4 py-2">
+                      <button
+                        onClick={() => handleDeleteResult(r.id)}
+                        className="bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };

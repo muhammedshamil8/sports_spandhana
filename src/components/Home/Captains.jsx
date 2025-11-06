@@ -12,8 +12,6 @@ import Shamil from  '../../assets/arts/shamil.png'
 import Saleel from  '../../assets/arts/saleel.png'
 
 function Captains() {
-
-
     return (
         <div id='captains' className='my-16 '>
             <div className='flex flex-col gap-16 p-4 mx-auto items-center max-w-[900px]'>

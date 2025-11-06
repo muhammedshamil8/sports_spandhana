@@ -234,30 +234,34 @@ function Results() {
                           </p>
                         </div>
                         
-                        <div className="flex flex-col  rounded-xl  respo-result-card sm:mt-6 mt-0 sm:gap-3">
-                          {/* Group winners by position and display badge once for each group */}
-                          {Object.entries(groupWinnersByPosition(result.winners)).map(([position, winners]) => (
-                            <div key={position} className="flex gap-2 items-center">
-                              <div>
-                                <img src={getBadgeImage(position)} alt={`Badge ${position}`} className="top-0 respo-badge max-w-3 md:max-w-5" />
-                              </div>
-                              <div className={`${winners.length > 1 ? '-mt-1' : '-mt-1'}`}>
-                                {/* Display winner(s) and department(s) for each position */}
-                                {winners.map((winner, index) => (
-                                  <div key={index}>
-                                    <p className={`font-semibold respo-winner ${winners.length > 1 ? 'more-winners' : ''}`}>
-                                      {winner.name}
-                                    </p>
-                                    <p className={` respo-winner-year text-black ${winners.length > 1 ? 'more-winners-year' : ''}`}>
-                                      {winner.team && <span> {winner.team} </span>}
-                                      
-                                    </p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                           <div className="flex flex-col rounded-xl respo-result-card gap-1 ">
+  {/* Group winners by position */}
+  {Object.entries(groupWinnersByPosition(result.winners)).map(([position, winners]) => (
+    <div key={position} className="flex items-center gap-4">
+      {/* Badge Image */}
+      <div>
+        <img
+          src={getBadgeImage(position)}
+          alt={`Badge ${position}`}
+          className="respo-badge"
+        />
+      </div>
+
+      {/* Winner Details */}
+      <div className="flex flex-col">
+        {winners.map((winner, index) => (
+          <div key={index} className="mb-1">
+            <p className="font-semibold respo-winner">{winner.name}</p>
+            {winner.team && (
+              <p className="respo-winner-year text-gray-700">{winner.team}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
+
                         {/* <img src={Congrats} alt="Congrats" className="w-44 h-auto mx-auto respo-congrats" /> */}
                       </div>
                       <div></div>
