@@ -124,8 +124,8 @@ const handleSubmit = async (e) => {
 
       const participantData = participantDoc.data();
       const points = winner.place === '1st' ? 10 :
-                     winner.place === '2nd' ? 7 :
-                     winner.place === '3rd' ? 5 : 1;
+                     winner.place === '2nd' ? 5 :
+                     winner.place === '3rd' ? 3 : 1;
 
       const teamName = participantData.team || '';
       if (teamName) {
