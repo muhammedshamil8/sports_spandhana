@@ -10,7 +10,7 @@ import Fathima_Rabeeha from  '../../assets/arts/Fathima_Rabeeha.png'
 import Munavvar from  '../../assets/arts/munnavar.png'
 import Shamil from  '../../assets/arts/shamil.png'
 import Saleel from  '../../assets/arts/saleel.png'
-
+import Nihal from  '../../assets/sports/nihal.jpeg'
 function Captains() {
     return (
         <div id='captains' className='my-16 '>
@@ -80,12 +80,12 @@ function Captains() {
                         >
                             <div className='flex flex-col items-center justify-center '>
                               <div className='relative onstage-committee overflow-hidden'>
-                                <img src={Munavvar} alt='main1' className='w-full h-full object-cover' />
+                                <img src={Nihal} alt='main1' className='w-full h-full object-cover' />
                                 <div className='absolute h-20 w-8 -top-8 -left-5 rotate-[55deg]  background-custom-color'></div>
                                 <div className='absolute background-custom-color h-[70px] w-10 -bottom-8 -right-5  rotate-[55deg]'></div>
                               </div>
                               <div className='flex items-center justify-start  w-full'>
-                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Munavvar</h3>
+                                <h3 className='font-semibold text-gray-800 text-xl mt-2 capitalize text-wrap onstage-committee-name'>Nihal</h3>
                               </div>
                             </div>
                             </motion.div>
