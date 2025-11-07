@@ -17,7 +17,7 @@ const ProgramResultsAdmin = () => {
   const [programs, setPrograms] = useState([]);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState('view'); // 'view' | 'create'
+  const [viewMode, setViewMode] = useState('create'); // 'view' | 'create'
   const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
