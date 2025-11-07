@@ -45,7 +45,7 @@ function Committe() {
           >
             <div className='flex flex-col items-center justify-center '>
               <div className='flex items-center justify-end  w-full'>
-                <h1 className='font-bold text-[#73052F] text-2xl  uppercase leading-6 text-right main-committee-heading'>DIRECTOR</h1>
+                <h1 className='font-bold text-[#73052F] text-2xl  uppercase leading-6 text-right main-committee-heading'>CONVENER</h1>
               </div>
               <div className='relative main-committee overflow-hidden'>
                 <img src={yasin} alt='main1' className='w-full h-full object-cover' />
