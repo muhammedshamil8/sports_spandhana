@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
 import LogoClg from '../../assets/arts/logoClg.png';
 import Union40 from '../../assets/unionlogo.png';
-import LogoF from '../../assets/arts/logoF.png';
+import LogoF from  '../../assets/sports/logo.png';
 import { NavLink  } from 'react-router-dom';
 
 function Footer() {
