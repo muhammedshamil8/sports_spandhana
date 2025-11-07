@@ -111,17 +111,17 @@ function Results() {
   return (
     <div className="relative h-screen overflow-y-scroll overflow-x-hidden">
       {/* images */}
-      <div className="">
-        {/* Background Image */}
+      {/* <div className="">
+       
         <img src={BgMain} alt="bgmain" className="fixed h-screen left-0 inset-0 top-0" />
 
-        {/* Fixed Column on the Right */}
+       
         <div className="fixed top-0 right-0 h-full flex flex-col gap-4 p-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <img key={index} src={bglogo} alt={`bglogo-${index}`} className="h-full w-10" />
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Main Content */}
       <div className="relative z-40 flex flex-col items-center justify-center px-10 py-10">
